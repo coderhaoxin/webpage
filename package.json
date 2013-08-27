@@ -1,0 +1,22 @@
+{
+  "name": "j-sql",
+  "version": "0.0.0",
+  "description": "transform js object or json to sql select or update",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coderhaoxin/j-sql.git"
+  },
+  "keywords": [
+    "json",
+    "select"
+  ],
+  "author": "haoxin",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/coderhaoxin/j-sql/issues"
+  }
+}
