@@ -12,7 +12,7 @@
 *   limit: '0,89'
 * }
 */
-exports = module.exports = function (tableName, valueOptions, extraOptions) {
+exports.select = function (tableName, valueOptions, extraOptions) {
   'use strict';
   var sql = 'select';
 
@@ -82,6 +82,63 @@ exports = module.exports = function (tableName, valueOptions, extraOptions) {
 
       if (extraOptions['limit']) {
         sql += ' limit ' + extraOptions['limit'];
+      }
+    }
+  }
+
+
+  return sql;
+}
+
+/*
+* tableName: ''
+*
+* valueOptions = {name: 'name', 'age': 'age', 'create_time': 'createTime'};
+*
+* extraOptions = {
+*   where: {name: '="hao"', age: 'between 12 and 23'}
+* }
+*/
+exports.update = function (tableName, valueOptions, extraOptions) {
+  'use strict';
+  var sql = 'update ' + tableName + ' set';
+
+  var keys = [];
+  var i;
+  var subKeys = [];
+  var j;
+
+
+  keys = Object.keys(valueOptions);
+  if (keys.length) {
+    for (i = 0; i < keys.length; i++) {
+
+      if (typeof(valueOptions[keys[i]]) === 'number') {
+        sql += ' ' + keys[i] + ' = ' + valueOptions[keys[i]];
+      } else if (typeof(valueOptions[keys[i]]) === 'string') {
+        sql += ' ' + keys[i] + ' = ' + '"' + valueOptions[keys[i]] + '"';
+      }
+
+      if ((i + 1) < keys.length) {
+        sql += ',';
+      }
+    }
+  }
+
+
+  if (typeof(extraOptions) === 'object') {
+    keys = Object.keys(extraOptions);
+    if (keys.length) {
+      if (extraOptions['where']) {
+        var where = extraOptions['where'];
+        subKeys = Object.keys(where);
+        for (j = 0; j < subKeys.length; j++) {
+          if (j === 0) {
+            sql += ' where ' + subKeys[j] + ' ' + where[subKeys[j]];
+          } else {
+            sql += ' and ' + subKeys[j] + ' ' + where[subKeys[j]];
+          }
+        }
       }
     }
   }
