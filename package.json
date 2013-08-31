@@ -1,6 +1,6 @@
 {
   "name": "j-sql",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "transform js object or json to sql select or update",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,7 @@
   "license": "BSD",
   "bugs": {
     "url": "https://github.com/coderhaoxin/j-sql/issues"
-  }
+  },
+  "readmeFilename": "README.md",
+  "gitHead": "0fb430a4caf33711229d25166e22bb8be511b526"
 }
