@@ -6,7 +6,7 @@
 * valueOptions = {name: 'name', 'age': 'age', 'create_time': 'createTime'};
 *
 * extraOptions = {
-*   where: {name: '="hao"', age: 'between 12 and 23'},
+*   where: {name: ['=','hao'], age: ['between', 12, 23]},
 *   order: {age: 'asc', create_time: 'desc'},
 *   group: 'name',
 *   limit: '0,89'
@@ -55,11 +55,18 @@ exports.select = function (tableName, valueOptions, extraOptions) {
       if (extraOptions['where']) {
         var where = extraOptions['where'];
         subKeys = Object.keys(where);
+
+        var whereSqlParseString = '';
         for (j = 0; j < subKeys.length; j++) {
+          if ((where[subKeys[j]][0] === '=') || (where[subKeys[j]][0] === '<') || (where[subKeys[j]][0] === '<=') || (where[subKeys[j]][0] === '>') || (where[subKeys[j]][0] === '>=')) {
+            whereSqlParseString = where[subKeys[j]][0] + ' ' + where[subKeys[j]][1];
+          } else if (where[subKeys[j]] === '<>') {
+            whereSqlParseString = 'between ' + where[subKeys[j]][1] + ' and ' + where[subKeys[j]][2];
+          }
           if (j === 0) {
-            sql += ' where ' + subKeys[j] + ' ' + where[subKeys[j]];
+            sql += ' where ' + subKeys[j] + ' ' + whereSqlParseString;
           } else {
-            sql += ' and ' + subKeys[j] + ' ' + where[subKeys[j]];
+            sql += ' and ' + subKeys[j] + ' ' + whereSqlParseString;
           }
         }
       }
@@ -96,7 +103,7 @@ exports.select = function (tableName, valueOptions, extraOptions) {
 * valueOptions = {name: 'name', 'age': 'age', 'create_time': 'createTime'};
 *
 * extraOptions = {
-*   where: {name: '="hao"', age: 'between 12 and 23'}
+*   where: {name: ['=', 'hao'], age: ['', 12, 23]}
 * }
 */
 exports.update = function (tableName, valueOptions, extraOptions) {
@@ -132,11 +139,18 @@ exports.update = function (tableName, valueOptions, extraOptions) {
       if (extraOptions['where']) {
         var where = extraOptions['where'];
         subKeys = Object.keys(where);
+
+        var whereSqlParseString = '';
         for (j = 0; j < subKeys.length; j++) {
+          if ((where[subKeys[j]][0] === '=') || (where[subKeys[j]][0] === '<') || (where[subKeys[j]][0] === '<=') || (where[subKeys[j]][0] === '>') || (where[subKeys[j]][0] === '>=')) {
+            whereSqlParseString = where[subKeys[j]][0] + ' ' + where[subKeys[j]][1];
+          } else if (where[subKeys[j]] === '<>') {
+            whereSqlParseString = 'between ' + where[subKeys[j]][1] + ' and ' + where[subKeys[j]][2];
+          }
           if (j === 0) {
-            sql += ' where ' + subKeys[j] + ' ' + where[subKeys[j]];
+            sql += ' where ' + subKeys[j] + ' ' + whereSqlParseString;
           } else {
-            sql += ' and ' + subKeys[j] + ' ' + where[subKeys[j]];
+            sql += ' and ' + subKeys[j] + ' ' + whereSqlParseString;
           }
         }
       }
@@ -145,4 +159,18 @@ exports.update = function (tableName, valueOptions, extraOptions) {
 
 
   return sql;
+}
+
+function whereParse(whereObject) {
+  'use strict';
+  var sql_where = '';
+
+  return sql_where;
+}
+
+function orderParse(orderObject) {
+  'use strict';
+  var sql_order = '';
+
+  return sql_order;
 }

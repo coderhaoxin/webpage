@@ -34,9 +34,9 @@ describe('select', function () {
   it('6', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
       where: {
-        'name': '="hao"',
-        'age': 'between 12 and 23',
-        'point': '> 1200'
+        'name': ['=', 'hao'],
+        'age': ['<>','12', '23'],
+        'point': ['>', '1200']
       }
     });
     console.log(sql);
@@ -70,9 +70,9 @@ describe('update', function () {
       create_time: '2013-8-27'
     }, {
       where: {
-        'name': '="hao"',
-        'age': 'between 12 and 23',
-        'point': '> 1200'
+        'name': ['=', 'hao'],
+        'age': ['<>', 12, 23],
+        'point': ['>', '1200']
       }
     });
     console.log(sql);
