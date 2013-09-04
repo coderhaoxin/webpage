@@ -1,3 +1,4 @@
+'use strict';
 /*
 * tableName: ''
 *
@@ -13,7 +14,6 @@
 * }
 */
 exports.select = function (tableName, valueOptions, extraOptions) {
-  'use strict';
   var sql = 'select';
 
   var keys = [];
@@ -53,22 +53,7 @@ exports.select = function (tableName, valueOptions, extraOptions) {
     keys = Object.keys(extraOptions);
     if (keys.length) {
       if (extraOptions['where']) {
-        var where = extraOptions['where'];
-        subKeys = Object.keys(where);
-
-        var whereSqlParseString = '';
-        for (j = 0; j < subKeys.length; j++) {
-          if ((where[subKeys[j]][0] === '=') || (where[subKeys[j]][0] === '<') || (where[subKeys[j]][0] === '<=') || (where[subKeys[j]][0] === '>') || (where[subKeys[j]][0] === '>=')) {
-            whereSqlParseString = where[subKeys[j]][0] + ' ' + where[subKeys[j]][1];
-          } else if (where[subKeys[j]] === '<>') {
-            whereSqlParseString = 'between ' + where[subKeys[j]][1] + ' and ' + where[subKeys[j]][2];
-          }
-          if (j === 0) {
-            sql += ' where ' + subKeys[j] + ' ' + whereSqlParseString;
-          } else {
-            sql += ' and ' + subKeys[j] + ' ' + whereSqlParseString;
-          }
-        }
+        sql += whereParse(extraOptions['where']);
       }
 
       if (extraOptions['order']) {
@@ -107,7 +92,6 @@ exports.select = function (tableName, valueOptions, extraOptions) {
 * }
 */
 exports.update = function (tableName, valueOptions, extraOptions) {
-  'use strict';
   var sql = 'update ' + tableName + ' set';
 
   var keys = [];
@@ -137,22 +121,7 @@ exports.update = function (tableName, valueOptions, extraOptions) {
     keys = Object.keys(extraOptions);
     if (keys.length) {
       if (extraOptions['where']) {
-        var where = extraOptions['where'];
-        subKeys = Object.keys(where);
-
-        var whereSqlParseString = '';
-        for (j = 0; j < subKeys.length; j++) {
-          if ((where[subKeys[j]][0] === '=') || (where[subKeys[j]][0] === '<') || (where[subKeys[j]][0] === '<=') || (where[subKeys[j]][0] === '>') || (where[subKeys[j]][0] === '>=')) {
-            whereSqlParseString = where[subKeys[j]][0] + ' ' + where[subKeys[j]][1];
-          } else if (where[subKeys[j]] === '<>') {
-            whereSqlParseString = 'between ' + where[subKeys[j]][1] + ' and ' + where[subKeys[j]][2];
-          }
-          if (j === 0) {
-            sql += ' where ' + subKeys[j] + ' ' + whereSqlParseString;
-          } else {
-            sql += ' and ' + subKeys[j] + ' ' + whereSqlParseString;
-          }
-        }
+        sql += whereParse(extraOptions['where']);
       }
     }
   }
@@ -161,15 +130,50 @@ exports.update = function (tableName, valueOptions, extraOptions) {
   return sql;
 }
 
-function whereParse(whereObject) {
-  'use strict';
-  var sql_where = '';
+/*
+* util function
+*/
 
-  return sql_where;
+function sqlFilter(value) {
+  if (value.indexOf(' ') !== '-1') {
+    value = value.split(' ').join();
+  }
+
+  return value;
+}
+
+function whereOptionParse(optionArray) {
+  var sqlWhereOption = '';
+
+  if (optionArray[0] === '<>') {
+    sqlWhereOption = 'between ' + optionArray[1] + ' and ' + optionArray[2];
+  } else {
+    // =, <, >, <=, >=
+    if (typeof(optionArray[1]) === 'string') {
+      optionArray[1] = '"' + optionArray[1] + '"';
+    }
+    sqlWhereOption = optionArray[0] + ' ' + optionArray[1];
+  }
+  return sqlWhereOption;
+}
+
+function whereParse(whereObject) {
+  var subSql = '';
+  var subKeys = Object.keys(whereObject);
+
+  var sql_where;
+  for (var i = 0; i < subKeys.length; i++) {
+    if (i === 0) {
+      subSql += ' where ' + subKeys[i] + ' ' + whereOptionParse(whereObject[subKeys[i]]);
+    } else {
+      subSql += ' and ' + subKeys[i] + ' ' + whereOptionParse(whereObject[subKeys[i]]);
+    }
+  }
+
+  return subSql;
 }
 
 function orderParse(orderObject) {
-  'use strict';
   var sql_order = '';
 
   return sql_order;
