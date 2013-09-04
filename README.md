@@ -32,9 +32,9 @@ var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
 
 var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
   where: {
-    'name': '="hao"',
-    'age': 'between 12 and 23',
-    'point': '> 1200'
+    'name': ['=', 'hao'],
+    'age': ['<>', '12', '23'],
+    'point': ['>' '1200']
   }
 });
 //select name, age, point, create_time from user_table where name ="hao" and age between 12 and 23 and point > 1200
@@ -62,9 +62,9 @@ var sql = update('user_table', {
   create_time: '2013-8-27'
 }, {
   where: {
-    'name': '="hao"',
-    'age': 'between 12 and 23',
-    'point': '> 1200'
+    'name': ['=', 'hao'],
+    'age': ['<>', '12', '23'],
+    'point': ['>', '1200']
   }
 });
 //update user_table set name = "xin", age = 23, point = 1300, create_time = "2013-8-27" where name ="hao" and age between 12 and 23 and point > 1200
