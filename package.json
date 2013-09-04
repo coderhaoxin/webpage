@@ -1,10 +1,10 @@
 {
   "name": "j-sql",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "transform js object or json to sql select or update",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -12,7 +12,10 @@
   },
   "keywords": [
     "json",
-    "select"
+    "js",
+    "sql",
+    "select",
+    "update"
   ],
   "author": "haoxin",
   "license": "BSD",
@@ -20,5 +23,8 @@
     "url": "https://github.com/coderhaoxin/j-sql/issues"
   },
   "readmeFilename": "README.md",
-  "gitHead": "0fb430a4caf33711229d25166e22bb8be511b526"
+  "gitHead": "0fb430a4caf33711229d25166e22bb8be511b526",
+  "devDependencies": {
+    "should": "~1.2.2"
+  }
 }
