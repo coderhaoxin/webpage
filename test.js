@@ -1,14 +1,16 @@
 var select = require('./index').select;
 var update = require('./index').update;
 
+var should = require('should');
+
 describe('select', function () {
   it('1', function () {
     var sql = select('user_table', '*');
-    console.log(sql);
+    sql.should.equal('select * from user_table');
   })
   it('2', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time']);
-    console.log(sql);
+    sql.should.equal('select name, age, point, create_time from user_table');
   })
   it('3', function () {
     var sql = select('user_table', {
@@ -17,29 +19,29 @@ describe('select', function () {
       point: 'point',
       create_time: 'createTime'
     });
-    console.log(sql);
+    sql.should.equal('select name as name, age as age, point as point, create_time as createTime from user_table');
   })
   it('4', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
       limit: '0,30'
     });
-    console.log(sql);
+    sql.should.equal('select name, age, point, create_time from user_table limit 0,30');
   })
   it('5', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
       group: 'name'
     });
-    console.log(sql);
+    sql.should.equal('select name, age, point, create_time from user_table group by name');
   })
   it('6', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
       where: {
         'name': ['=', 'hao'],
-        'age': ['<>','12', '23'],
-        'point': ['>', '1200']
+        'age': ['<>', 12, 23],
+        'point': ['>', 1200]
       }
     });
-    console.log(sql);
+    sql.should.equal('select name, age, point, create_time from user_table where name = "hao" and age between 12 and 23 and point > 1200');
   })
   it('7', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
@@ -48,7 +50,7 @@ describe('select', function () {
         point: 'desc'
       }
     });
-    console.log(sql);
+    sql.should.equal('select name, age, point, create_time from user_table order by age asc, point desc');
   })
 })
 
@@ -60,7 +62,7 @@ describe('update', function () {
       point: 1200,
       create_time: '2013-8-26'
     });
-    console.log(sql);
+    sql.should.equal('update user_table set name = "hao", age = 22, point = 1200, create_time = "2013-8-26"');
   })
   it('2', function () {
     var sql = update('user_table', {
@@ -72,9 +74,9 @@ describe('update', function () {
       where: {
         'name': ['=', 'hao'],
         'age': ['<>', 12, 23],
-        'point': ['>', '1200']
+        'point': ['>', 1200]
       }
     });
-    console.log(sql);
+    sql.should.equal('update user_table set name = "xin", age = 23, point = 1300, create_time = "2013-8-27" where name = "hao" and age between 12 and 23 and point > 1200');
   })
 })
