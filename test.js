@@ -52,6 +52,26 @@ describe('select', function () {
     });
     sql.should.equal('select name, age, point, create_time from user_table order by age asc, point desc');
   })
+  it('8', function () {
+    var sql = select('user_table',{
+      'name': 'name',
+      'age': 'age',
+      'point': 'point',
+      'create_time': 'createTime'
+    }, {
+      where: {
+        'name': ['=', 'hao'],
+        'age': ['<>', 12, 23],
+        'point': ['>', 1200]
+      },
+      order: {
+        'age': 'asc',
+        'point': 'desc'
+      },
+      limit: '0,30'
+    });
+    sql.should.equal('select name as name, age as age, point as point, create_time as createTime from user_table where name = "hao" and age between 12 and 23 and point > 1200 order by age asc, point desc limit 0,30');
+  })
 })
 
 describe('update', function () {
