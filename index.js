@@ -54,6 +54,9 @@ exports.select = function (tableName, valueOptions, extraOptions) {
     if (keys.length) {
       if (extraOptions['where']) {
         sql += whereParse(extraOptions['where']);
+        if (extraOptions['or']) {
+          sql += orParse(extraOptions['or']);
+        }
       }
 
       if (extraOptions['order']) {
@@ -87,11 +90,11 @@ exports.select = function (tableName, valueOptions, extraOptions) {
 *
 * valueOptions = {name: 'name', 'age': 'age', 'create_time': 'createTime'};
 *
-* extraOptions = {
+* whereOptions = {
 *   where: {name: ['=', 'hao'], age: ['', 12, 23]}
 * }
 */
-exports.update = function (tableName, valueOptions, extraOptions) {
+exports.update = function (tableName, valueOptions, whereOptions) {
   var sql = 'update ' + tableName + ' set';
 
   var keys = [];
@@ -117,12 +120,10 @@ exports.update = function (tableName, valueOptions, extraOptions) {
   }
 
 
-  if (typeof(extraOptions) === 'object') {
-    keys = Object.keys(extraOptions);
+  if (typeof(whereOptions) === 'object') {
+    keys = Object.keys(whereOptions);
     if (keys.length) {
-      if (extraOptions['where']) {
-        sql += whereParse(extraOptions['where']);
-      }
+      sql += whereParse(whereOptions);
     }
   }
 
@@ -168,6 +169,17 @@ function whereParse(whereObject) {
     } else {
       subSql += ' and ' + subKeys[i] + ' ' + whereOptionParse(whereObject[subKeys[i]]);
     }
+  }
+
+  return subSql;
+}
+
+function orParse(orObject) {
+  var subSql = '';
+
+  var sql_or;
+  for (var i in orObject) {
+    subSql += ' or ' + i + ' ' + whereOptionParse(orObject[i]);
   }
 
   return subSql;

@@ -61,11 +61,9 @@ var sql = update('user_table', {
   point: 1300,
   create_time: '2013-8-27'
 }, {
-  where: {
-    'name': ['=', 'hao'],
-    'age': ['<>', '12', '23'],
-    'point': ['>', '1200']
-  }
+  'name': ['=', 'hao'],
+  'age': ['<>', '12', '23'],
+  'point': ['>', '1200']
 });
 //update user_table set name = "xin", age = 23, point = 1300, create_time = "2013-8-27" where name ="hao" and age between 12 and 23 and point > 1200
 ```
