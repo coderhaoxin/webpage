@@ -94,7 +94,7 @@ exports.select = function (tableName, valueOptions, extraOptions) {
 *   where: {name: ['=', 'hao'], age: ['', 12, 23]}
 * }
 */
-exports.update = function (tableName, valueOptions, whereOptions) {
+exports.update = function (tableName, valueOptions, whereOptions, orOptions) {
   var sql = 'update ' + tableName + ' set';
 
   var keys = [];
@@ -124,6 +124,9 @@ exports.update = function (tableName, valueOptions, whereOptions) {
     keys = Object.keys(whereOptions);
     if (keys.length) {
       sql += whereParse(whereOptions);
+      if (orOptions) {
+        sql += orParse(orOptions);
+      }
     }
   }
 

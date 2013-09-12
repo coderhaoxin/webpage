@@ -1,4 +1,4 @@
-var select = require('./index').select;
+var select = require('../index').select;
 
 var startTime = Date.now();
 var times = 1000000;
