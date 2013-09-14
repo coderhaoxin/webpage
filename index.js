@@ -99,9 +99,6 @@ exports.update = function (tableName, valueOptions, whereOptions, orOptions) {
 
   var keys = [];
   var i;
-  var subKeys = [];
-  var j;
-
 
   keys = Object.keys(valueOptions);
   if (keys.length) {
@@ -130,6 +127,56 @@ exports.update = function (tableName, valueOptions, whereOptions, orOptions) {
     }
   }
 
+
+  return sql;
+}
+
+/*
+* insert
+*/
+exports.insert = function (tableName, valueOptions) {
+  var sql = 'insert into ' + tableName;
+
+  var keys = [];
+  var i;
+
+  keys = Object.keys(valueOptions);
+  if (keys.length) {
+    sql += ' set';
+    for (i = 0; i < keys.length; i++) {
+
+      if (typeof(valueOptions[keys[i]]) === 'number') {
+        sql += ' ' + keys[i] + ' = ' + valueOptions[keys[i]];
+      } else if (typeof(valueOptions[keys[i]]) === 'string') {
+        sql += ' ' + keys[i] + ' = ' + '"' + valueOptions[keys[i]] + '"';
+      }
+
+      if ((i + 1) < keys.length) {
+        sql += ',';
+      }
+    }
+  }
+
+  return sql;
+}
+
+/*
+* delete
+*/
+exports.del = function (tableName, whereOptions, orOptions) {
+  var sql = 'delete from ' + tableName;
+
+  var keys = [];
+
+  if (typeof(whereOptions) === 'object') {
+    keys = Object.keys(whereOptions);
+    if (keys.length) {
+      sql += whereParse(whereOptions);
+      if (orOptions) {
+        sql += orParse(orOptions);
+      }
+    }
+  }
 
   return sql;
 }
