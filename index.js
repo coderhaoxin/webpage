@@ -198,6 +198,8 @@ function whereOptionParse(optionArray) {
 
   if (optionArray[0] === '<>') {
     sqlWhereOption = 'between ' + optionArray[1] + ' and ' + optionArray[2];
+  } else if (optionArray[0] === '==') {
+    sqlWhereOption = '= ' + optionArray[1].toString();
   } else {
     // =, <, >, <=, >=
     if (typeof(optionArray[1]) === 'string') {
