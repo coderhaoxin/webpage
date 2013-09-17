@@ -55,7 +55,9 @@ describe('select', function () {
         'phone': ['>', 2345678]
       }
     });
-    sql.should.equal('select name, age, point, create_time from user_table where name = "hao" and age between 12 and 23 and point > 1200 or nickname = "hx" or money between 2345 and 3456 or phone > 2345678');
+    sql.should.equal(['select name, age, point, create_time from user_table ',
+                      'where name = "hao" and age between 12 and 23 and point > 1200 ',
+                      'or nickname = "hx" or money between 2345 and 3456 or phone > 2345678'].join(''));
   })
   it('8', function () {
     var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
@@ -84,7 +86,9 @@ describe('select', function () {
       },
       limit: '0,30'
     });
-    sql.should.equal('select name as name, age as age, point as point, create_time as createTime from user_table where name = "hao" and age between 12 and 23 and point > 1200 order by age asc, point desc limit 0,30');
+    sql.should.equal(['select name as name, age as age, point as point, create_time as createTime ',
+                      'from user_table where name = "hao" and age between 12 and 23 and point > 1200 ',
+                      'order by age asc, point desc limit 0,30'].join(''));
   })
 
   it('multi tables select', function () {
@@ -109,7 +113,11 @@ describe('select', function () {
       },
       limit: '0,30'
     });
-    sql.should.equal('select user_table.name as name, user_table.age as age, user_table.point as point, user_table.create_time as createTime, member_table.id as memberId, member_table.nickname as nickname from user_table, member_table where user_table.name = "hao" and user_table.age between 12 and 23 and user_table.point > 1200 and member_table.user_id = user_table._id and member_table.nickname = "hello" order by user_table.age asc, user_table.point desc limit 0,30');
+    sql.should.equal(['select user_table.name as name, user_table.age as age, user_table.point as point, ',
+                      'user_table.create_time as createTime, member_table.id as memberId, member_table.nickname as nickname ',
+                      'from user_table, member_table where user_table.name = "hao" and user_table.age between 12 and 23 and ',
+                      'user_table.point > 1200 and member_table.user_id = user_table._id and member_table.nickname = "hello" ',
+                      'order by user_table.age asc, user_table.point desc limit 0,30'].join(''));
   })
   it('multi tables select', function () {
     var sql = select('user_table u, member_table m',{
@@ -133,6 +141,8 @@ describe('select', function () {
       },
       limit: '0,30'
     });
-    sql.should.equal('select u.name as name, u.age as age, u.point as point, u.create_time as createTime, m.id as memberId, m.nickname as nickname from user_table u, member_table m where u.name = "hao" and u.age between 12 and 23 and u.point > 1200 and m.user_id = u._id and m.nickname = "hello" order by u.age asc, u.point desc limit 0,30');
+    sql.should.equal(['select u.name as name, u.age as age, u.point as point, u.create_time as createTime, m.id as memberId, m.nickname as nickname ',
+                      'from user_table u, member_table m where u.name = "hao" and u.age between 12 and 23 and u.point > 1200 and m.user_id = u._id ',
+                      'and m.nickname = "hello" order by u.age asc, u.point desc limit 0,30'].join(''));
   })
 })
