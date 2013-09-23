@@ -3,65 +3,54 @@ generate sql from js
 
 ###examples
 ```js
-var select = require('j-sql').select;
-var update = require('j-sql').update;
-var insert = require('j-sql').select;
-var del    = require('j-sql').del;
+var jSql = require('j-sql');
 ```
 
 ### sql select
 ```js
-var sql = select('user_table', '*');
+var sql = jSql.select('user_table', '*').done();
 //select * from user_table
 ```
 
 ```js
-var sql = select('user_table', ['name', 'age', 'point', 'create_time']);
+var sql = jSql.select('user_table', ['name', 'age', 'point', 'create_time']).done();
 //select name, age, point, create_time from user_table
 ```
 
 ```js
-var sql = select('user_table', {
+var sql = jSql.select('user_table', {
   name: 'name',
   age: 'age',
   point: 'point',
   create_time: 'createTime'
-});
+}).done();
 //select name as name, age as age, point as point, create_time as createTime from user_table
 ```
 
 ```js
-var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
-  limit: '0,30'
-});
+var sql = jSql.select('user_table', ['name', 'age', 'point', 'create_time']).limit('0,30').done();
 //select name, age, point, create_time from user_table limit 0,30
 ```
 
 ```js
-var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
-  group: 'name'
-});
+var sql = jSql.select('user_table', ['name', 'age', 'point', 'create_time']).group('name').done();
 //select name, age, point, create_time from user_table group by name
 ```
 
 ```js
-var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
-  where: {
-    'name': ['=', 'hao'],
-    'age': ['<>', '12', '23'],
-    'point': ['>' '1200']
-  }
-});
+var sql = jSql.select('user_table', ['name', 'age', 'point', 'create_time']).where({
+  'name': ['=', 'hao'],
+  'age': ['<>', 12, 23],
+  'point': ['>', 1200]
+}).done();
 //select name, age, point, create_time from user_table where name ="hao" and age between 12 and 23 and point > 1200
 ```
 
 ```js
-var sql = select('user_table', ['name', 'age', 'point', 'create_time'], {
-  order: {
-    age: 'asc',
-    point: 'desc'
-  }
-});
+var sql = jSql.select('user_table', ['name', 'age', 'point', 'create_time']).order({
+  age: 'asc',
+  point: 'desc'
+}).done();
 //select name, age, point, create_time from user_table order by age asc, point desc
 ```
 
