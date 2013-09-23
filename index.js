@@ -1,185 +1,4 @@
 'use strict';
-/*
-* tableName: ''
-*
-* valueOptions = '*';
-* valueOptions = ['name', 'age'];
-* valueOptions = {name: 'name', 'age': 'age', 'create_time': 'createTime'};
-*
-* extraOptions = {
-*   where: {name: ['=','hao'], age: ['between', 12, 23]},
-*   order: {age: 'asc', create_time: 'desc'},
-*   group: 'name',
-*   limit: '0,89'
-* }
-*/
-exports.select = function (tableName, valueOptions, extraOptions) {
-  var sql = 'select';
-
-  var keys = [];
-  var i;
-  var subKeys = [];
-  var j;
-
-
-  if (Array.isArray(valueOptions)) {
-    for (i = 0; i < valueOptions.length; i++) {
-      sql += ' ' + valueOptions[i];
-      if ((i + 1) < valueOptions.length) {
-        sql += ',';
-      }
-    }
-  } else if (typeof(valueOptions) === 'object') {
-    keys = Object.keys(valueOptions);
-    if (keys.length) {
-      for (i = 0; i < keys.length; i++) {
-        sql += ' ' + keys[i] + ' as ' + valueOptions[keys[i]];
-        if ((i + 1) < keys.length) {
-          sql += ',';
-        }
-      }
-    } else {
-      sql += ' *';
-    }
-  } else {
-    sql += ' *';
-  }
-
-
-  sql += ' from ' + tableName;
-
-
-  if (typeof(extraOptions) === 'object') {
-    keys = Object.keys(extraOptions);
-    if (keys.length) {
-      if (extraOptions['where']) {
-        sql += whereParse(extraOptions['where']);
-        if (extraOptions['or']) {
-          sql += orParse(extraOptions['or']);
-        }
-      }
-
-      if (extraOptions['order']) {
-        var order = extraOptions['order'];
-        subKeys = Object.keys(order);
-        for (j = 0; j < subKeys.length; j++) {
-          if (j === 0) {
-            sql += ' order by ' + subKeys[j] + ' ' + order[subKeys[j]];
-          } else {
-            sql += ', ' + subKeys[j] + ' ' + order[subKeys[j]];
-          }
-        }
-      }
-
-      if (extraOptions['group']) {
-        sql += ' group by ' + extraOptions['group'];
-      }
-
-      if (extraOptions['limit']) {
-        sql += ' limit ' + extraOptions['limit'];
-      }
-    }
-  }
-
-
-  return sql;
-}
-
-/*
-* tableName: ''
-*
-* valueOptions = {name: 'name', 'age': 'age', 'create_time': 'createTime'};
-*
-* whereOptions = {
-*   where: {name: ['=', 'hao'], age: ['', 12, 23]}
-* }
-*/
-exports.update = function (tableName, valueOptions, whereOptions, orOptions) {
-  var sql = 'update ' + tableName + ' set';
-
-  var keys = [];
-  var i;
-
-  keys = Object.keys(valueOptions);
-  if (keys.length) {
-    for (i = 0; i < keys.length; i++) {
-
-      if (typeof(valueOptions[keys[i]]) === 'number') {
-        sql += ' ' + keys[i] + ' = ' + valueOptions[keys[i]];
-      } else if (typeof(valueOptions[keys[i]]) === 'string') {
-        sql += ' ' + keys[i] + ' = ' + '"' + valueOptions[keys[i]] + '"';
-      }
-
-      if ((i + 1) < keys.length) {
-        sql += ',';
-      }
-    }
-  }
-
-
-  if (typeof(whereOptions) === 'object') {
-    keys = Object.keys(whereOptions);
-    if (keys.length) {
-      sql += whereParse(whereOptions);
-      if (orOptions) {
-        sql += orParse(orOptions);
-      }
-    }
-  }
-
-
-  return sql;
-}
-
-/*
-* insert
-*/
-exports.insert = function (tableName, valueOptions) {
-  var sql = 'insert into ' + tableName;
-
-  var keys = [];
-  var i;
-
-  keys = Object.keys(valueOptions);
-  if (keys.length) {
-    sql += ' set';
-    for (i = 0; i < keys.length; i++) {
-
-      if (typeof(valueOptions[keys[i]]) === 'number') {
-        sql += ' ' + keys[i] + ' = ' + valueOptions[keys[i]];
-      } else if (typeof(valueOptions[keys[i]]) === 'string') {
-        sql += ' ' + keys[i] + ' = ' + '"' + valueOptions[keys[i]] + '"';
-      }
-
-      if ((i + 1) < keys.length) {
-        sql += ',';
-      }
-    }
-  }
-
-  return sql;
-}
-
-/*
-* delete
-*/
-exports.del = function (tableName, whereOptions, orOptions) {
-  var sql = 'delete from ' + tableName;
-
-  var keys = [];
-
-  if (typeof(whereOptions) === 'object') {
-    keys = Object.keys(whereOptions);
-    if (keys.length) {
-      sql += whereParse(whereOptions);
-      if (orOptions) {
-        sql += orParse(orOptions);
-      }
-    }
-  }
-
-  return sql;
-}
 
 /*
 * util function
@@ -238,7 +57,134 @@ function orParse(orObject) {
 }
 
 function orderParse(orderObject) {
-  var sql_order = '';
+  var i;
+  var subSql;
+  var keys = Object.keys(orderObject);
 
-  return sql_order;
+  for (i = 0; i < keys.length; i++) {
+    if (i === 0) {
+      subSql += ' order by ' + keys[i] + ' ' + orderObject[keys[i]];
+    } else {
+      subSql += ', ' + keys[i] + ' ' + orderObject[keys[i]];
+    }
+  }
+
+  return subSql;
 }
+
+function setParse(setObject) {
+  var subSql = ' set';
+
+  var keys = Object.keys(setObject);
+  var i;
+
+  for (i = 0; i < keys.length; i++) {
+    if (typeof(setObject[keys[i]]) === 'number') {
+      subSql += ' ' + keys[i] + ' = ' + setObject[keys[i]];
+    } else if (typeof(setObject[keys[i]]) === 'string') {
+      subSql += ' ' + keys[i] + ' = ' + '"' + setObject[keys[i]] + '"';
+    }
+
+    if ((i + 1) < keys.length) {
+      subSql += ',';
+    }
+  }
+
+  return subSql;
+}
+
+/*
+* jSql
+*/
+function jSql() {
+  this.sql = '';
+}
+
+jSql.prototype.select = function (tableName, valueOptions) {
+  var self = this;
+
+  var keys = [];
+  var i;
+
+  self.sql += 'select';
+
+  if (Array.isArray(valueOptions)) {
+    for (i = 0; i < valueOptions.length; i++) {
+      self.sql += ' ' + valueOptions[i];
+      if ((i + 1) < valueOptions.length) {
+        self.sql += ',';
+      }
+    }
+  } else if (typeof(valueOptions) === 'object') {
+    keys = Object.keys(valueOptions);
+    if (keys.length) {
+      for (i = 0; i < keys.length; i++) {
+        self.sql += ' ' + keys[i] + ' as ' + valueOptions[keys[i]];
+        if ((i + 1) < keys.length) {
+          self.sql += ',';
+        }
+      }
+    } else {
+      self.sql += ' *';
+    }
+  } else {
+    self.sql += ' *';
+  }
+
+  self.sql += ' from ' + tableName;
+
+  return self;
+}
+
+jSql.prototype.update = function (tableName) {
+  this.sql += 'update ' + tableName;
+  return this;
+}
+
+jSql.prototype.insert = function (tableName) {
+  this.sql += 'insert into ' + tableName;
+  return this;
+}
+
+jSql.prototype.delete = function (tableName) {
+  this.sql += 'delete from ' + tableName;
+  return this;
+}
+
+jSql.prototype.set = function (options) {
+  this.sql += setParse(options);
+  return this;
+}
+
+jSql.prototype.where = function (options) {
+  this.sql += whereParse(options);
+  return this;
+}
+
+jSql.prototype.or = function (options) {
+  this.sql += orParse(options);
+  return this;
+}
+
+jSql.prototype.order = function (options) {
+  this.sql += orderParse(options);
+  return this;
+}
+
+jSql.prototype.group = function (option) {
+  this.sql += ' group by ' + option;
+  return this;
+}
+
+jSql.prototype.limit = function (option) {
+  this.sql += ' limit ' + option;
+  return this;
+}
+
+jSql.prototype.done = function () {
+  var sql = this.sql;
+  this.sql = '';
+  return sql;
+}
+
+module.exports = new jSql();
