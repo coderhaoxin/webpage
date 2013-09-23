@@ -1,6 +1,6 @@
 {
   "name": "j-sql",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "transform js object or json to sql select or update",
   "main": "index.js",
   "scripts": {
