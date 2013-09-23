@@ -57,11 +57,10 @@ function orParse(orObject) {
 }
 
 function orderParse(orderObject) {
-  var i;
-  var subSql;
+  var subSql = '';
   var keys = Object.keys(orderObject);
 
-  for (i = 0; i < keys.length; i++) {
+  for (var i = 0; i < keys.length; i++) {
     if (i === 0) {
       subSql += ' order by ' + keys[i] + ' ' + orderObject[keys[i]];
     } else {
@@ -146,7 +145,7 @@ jSql.prototype.insert = function (tableName) {
   return this;
 }
 
-jSql.prototype.delete = function (tableName) {
+jSql.prototype.del = function (tableName) {
   this.sql += 'delete from ' + tableName;
   return this;
 }
