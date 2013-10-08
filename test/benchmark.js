@@ -1,26 +1,26 @@
-var select = require('../index').select;
+var jSql = require('../index');
 
 var startTime = Date.now();
 var times = 1000000;
 
 for (var i = 0; i < times; i++) {
-  select('user_table', {
-    'name': 'name',
-    'age': 'age',
-    'point': 'point',
-    'create_time': 'createTime'
-  }, {
-    where: {
-      'name': ['=', 'hao'],
-      'age': ['<>', 12, 23],
-      'point': ['>', 1200]
-    },
-    order: {
-      'age': 'asc',
-      'point': 'desc'
-    },
-    limit: '0,30'
-  });
+  jSql.select('user_table u, member_table m', {
+    'u.name': 'name',
+    'u.age': 'age',
+    'u.point': 'point',
+    'u.create_time': 'createTime',
+    'm.id': 'memberId',
+    'm.nickname': 'nickname'
+  }).where({
+    'u.name': ['=', 'hao'],
+    'u.age': ['<>', 12, 23],
+    'u.point': ['>', 1200],
+    'm.user_id': ['==', 'u._id'],
+    'm.nickname': ['=', 'hello']
+  }).order({
+    'u.age': 'asc',
+    'u.point': 'desc'
+  }).limit('0,30').done();
 }
 
 console.log('run times:', times);
