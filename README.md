@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/j-sql.png?downloads=true)](https://nodei.co/npm/j-sql/)
+
 ### j-sql
 generate sql from js
 
