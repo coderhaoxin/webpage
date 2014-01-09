@@ -1,27 +1,27 @@
-var jSql = require('../index');
+var SQL = require('../index')
 
-var startTime = Date.now();
-var times = 1000000;
+var startTime = Date.now()
+var times = 100000
 
 for (var i = 0; i < times; i++) {
-  jSql.select('user_table u, member_table m', {
-    'u.name': 'name',
-    'u.age': 'age',
-    'u.point': 'point',
-    'u.create_time': 'createTime',
-    'm.id': 'memberId',
-    'm.nickname': 'nickname'
-  }).where({
-    'u.name': ['=', 'hao'],
-    'u.age': ['<>', 12, 23],
-    'u.point': ['>', 1200],
-    'm.user_id': ['==', 'u._id'],
-    'm.nickname': ['=', 'hello']
-  }).order({
-    'u.age': 'asc',
-    'u.point': 'desc'
-  }).limit('0,30').done();
+	SQL.select('user_table u, member_table m', {
+		'u.name': 'name',
+		'u.age': 'age',
+		'u.point': 'point',
+		'u.create_time': 'createTime',
+		'm.id': 'memberId',
+		'm.nickname': 'nickname'
+	}).where({
+		'u.name': ['=', 'hao'],
+		'u.age': ['<>', 12, 23],
+		'u.point': ['>', 1200],
+		'm.user_id': ['==', 'u._id'],
+		'm.nickname': ['=', 'hello']
+	}).order({
+		'u.age': 'asc',
+		'u.point': 'desc'
+	}).limit('0,30').done()
 }
 
-console.log('run times:', times);
-console.log('consume time:', Date.now() - startTime, ' ms');
+console.log('run times:', times)
+console.log('consume time:', Date.now() - startTime, ' ms')
