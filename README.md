@@ -250,3 +250,5 @@ and age between 12 and 23 and point > 1200 or nickname = "hx"
 or money between 2345 and 3456 or phone > 2345678
 */
 ```
+
+### test coverage: 99%

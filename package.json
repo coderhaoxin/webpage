@@ -1,10 +1,10 @@
 {
   "name": "j-sql",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "transform js object or json to sql select or update",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "make test-all"
   },
   "repository": {
     "type": "git",
@@ -17,13 +17,21 @@
     "select",
     "update"
   ],
+  "config": {
+    "blanket": {
+      "pattern": "j-sql/index.js"
+    }
+  },
   "author": "haoxin",
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/coderhaoxin/j-sql/issues"
   },
   "devDependencies": {
-    "should": "~2.1.1"
+    "travis-cov": "*",
+    "blanket": "*",
+    "should": "*",
+    "mocha": "*"
   },
   "directories": {
     "test": "test"
