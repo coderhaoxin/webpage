@@ -185,7 +185,7 @@ function setParse(setObject) {
 
 function valuesParse(setObject) {
 	var subSql = ' ('
-	var valuesSql = ' values ( '
+	var valuesSql = ' values ('
 
 	var keys = Object.keys(setObject)
 	var i
