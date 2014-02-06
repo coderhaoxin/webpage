@@ -62,6 +62,11 @@ SQL.prototype.set = function (options) {
 	return this
 }
 
+SQL.prototype.values = function(options) {
+	this.sql += valuesParse(options)
+	return this
+}
+
 SQL.prototype.where = function (options) {
 	this.sql += whereParse(options)
 	return this
@@ -176,6 +181,31 @@ function setParse(setObject) {
 	}
 
 	return subSql
+}
+
+function valuesParse(setObject) {
+	var subSql = ' ('
+	var valuesSql = ' values ('
+
+	var keys = Object.keys(setObject)
+	var i
+
+	for (i = 0; i < keys.length; i++) {
+		subSql += ' ' + keys[i]
+
+		if (typeof(setObject[keys[i]]) === 'number') {
+			valuesSql += ' ' + setObject[keys[i]]
+		} else if (typeof(setObject[keys[i]]) === 'string') {
+			valuesSql += ' ' + '"' + setObject[keys[i]] + '"'
+		}
+
+		if ((i + 1) < keys.length) {
+			subSql += ','
+			valuesSql += ','
+		}
+	}
+
+	return subSql + ' )' + valuesSql + ' )'
 }
 
 module.exports = new SQL()
