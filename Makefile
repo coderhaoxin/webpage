@@ -4,7 +4,7 @@ TIMEOUT = 20000
 MOCHA_OPTS =
 
 install:
-	@npm install --registry=http://r.cnpmjs.org
+	@npm --registry=http://registry.npm.taobao.org --disturl=http://dist.u.qiniudn.com install
 
 test: install
 	@NODE_ENV=test ./node_modules/mocha/bin/mocha \
@@ -17,5 +17,10 @@ test-cov:
 	@$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=travis-cov
 
 test-all: test test-cov
+
+test-cov-html:
+	@rm -f coverage.html
+	@$(MAKE) test MOCHA_OPTS='--require blanket' REPORTER=html-cov > coverage.html
+	@ls -lh coverage.html
 
 .PHONY: test
