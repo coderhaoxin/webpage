@@ -1,7 +1,6 @@
 'use strict';
 
 var SQL = require('../index'),
-
   startTime = Date.now(),
   times = 100000;
 

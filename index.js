@@ -1,9 +1,6 @@
 'use strict';
 
-/*
- * SQL
- */
-
+// SQL
 function SQL() {
   this.sql = '';
 }
@@ -100,9 +97,7 @@ SQL.prototype.done = function() {
   return sql;
 };
 
-/*
- * util function
- */
+// util
 function whereOptionParse(optionArray) {
   var sqlWhereOption = '';
 

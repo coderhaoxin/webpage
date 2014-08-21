@@ -1,4 +1,8 @@
-[![NPM](https://nodei.co/npm/j-sql.png?downloads=true)](https://nodei.co/npm/j-sql/)
+[![NPM version][npm-img]][npm-url]
+[![Build status][travis-img]][travis-url]
+[![Test coverage][coveralls-img]][coveralls-url]
+[![License][license-img]][license-url]
+[![Dependency status][david-img]][david-url]
 
 ## j-sql
 
@@ -28,17 +32,13 @@ var SQL = require('j-sql')
 ```js
 var sql = SQL.select('user_table', '*').done()
 
-/*
-select * from user_table
-*/
+// select * from user_table
 ```
 
 ```js
 var sql = SQL.select('user_table', ['name', 'age', 'point', 'create_time']).done()
 
-/*
-select name, age, point, create_time from user_table
-*/
+// select name, age, point, create_time from user_table
 ```
 
 ```js
@@ -49,25 +49,19 @@ var sql = SQL.select('user_table', {
   create_time: 'createTime'
 }).done()
 
-/*
-select name as name, age as age, point as point, create_time as createTime from user_table
-*/
+// select name as name, age as age, point as point, create_time as createTime from user_table
 ```
 
 ```js
 var sql = SQL.select('user_table', ['name', 'age', 'point', 'create_time']).limit('0,30').done()
 
-/*
-select name, age, point, create_time from user_table limit 0,30
-*/
+// select name, age, point, create_time from user_table limit 0,30
 ```
 
 ```js
 var sql = SQL.select('user_table', ['name', 'age', 'point', 'create_time']).group('name').done()
 
-/*
-select name, age, point, create_time from user_table group by name
-*/
+// select name, age, point, create_time from user_table group by name
 ```
 
 #### supported where options
@@ -87,10 +81,7 @@ var sql = SQL.select('user_table', ['name', 'age', 'point', 'create_time']).wher
   'point': ['>', 1200]
 }).done()
 
-/*
-select name, age, point, create_time from user_table
-where name ="hao" and age between 12 and 23 and point > 1200
-*/
+// select name, age, point, create_time from user_table where name ="hao" and age between 12 and 23 and point > 1200
 ```
 
 ```js
@@ -98,10 +89,7 @@ var sql = SQL.select('user_table', ['name', 'age', 'point', 'create_time']).wher
   'name': ['like', '%hao%']
 }).done()
 
-/*
-select name, age, point, create_time from user_table where name like "%hao%"
-*/
-  })
+// select name, age, point, create_time from user_table where name like "%hao%"
 ```
 
 ```js
@@ -110,9 +98,7 @@ var sql = SQL.select('user_table', ['name', 'age', 'point', 'create_time']).orde
   point: 'desc'
 }).done()
 
-/*
-select name, age, point, create_time from user_table order by age asc, point desc
-*/
+// select name, age, point, create_time from user_table order by age asc, point desc
 ```
 
 * support multi table query, but when you use `==` in `where options` or `or options`, the `string` will not be translate to `"string"`
@@ -183,9 +169,7 @@ var sql = SQL.update('user_table').set({
   create_time: '2013-8-26'
 }).done()
 
-/*
-update user_table set name = "hao", age = 22, point = 1200, create_time = "2013-8-26"
-*/
+// update user_table set name = "hao", age = 22, point = 1200, create_time = "2013-8-26"
 ```
 
 ```js
@@ -200,10 +184,7 @@ var sql = SQL.update('user_table').set({
   'point': ['>', 1200]
 }).done()
 
-/*
-update user_table set name = "xin", age = 23, point = 1300, create_time = "2013-8-27"
-where name ="hao" and age between 12 and 23 and point > 1200
-*/
+// update user_table set name = "xin", age = 23, point = 1300, create_time = "2013-8-27" where name ="hao" and age between 12 and 23 and point > 1200
 ```
 
 ### sql insert
@@ -215,9 +196,7 @@ var sql = SQL.insert('user_table').set({
   create_time: '2013-09-14'
 }).done()
 
-/*
-insert into user_table set name = "hao", age = 12, point = 3333, create_time = "2013-09-14"
-*/
+// insert into user_table set name = "hao", age = 12, point = 3333, create_time = "2013-09-14"
 ```
 
 ```js
@@ -228,9 +207,7 @@ var sql = SQL.insert('user_table').values({
   create_time: '2013-09-14'
 }).done()
 
-/*
-insert into user_table ( name, age, point, create_time ) values ( "hao", 12, 3333, "2013-09-14" )
-*/
+// insert into user_table ( name, age, point, create_time ) values ( "hao", 12, 3333, "2013-09-14" )
 ```
 
 ### sql delete
@@ -241,9 +218,7 @@ var sql = SQL.del('user_table').where({
   'point': ['>', 1200]
 }).done()
 
-/*
-delete from user_table where name = "hao" and age between 12 and 23 and point > 1200
-*/
+// delete from user_table where name = "hao" and age between 12 and 23 and point > 1200
 ```
 
 ```js
@@ -257,15 +232,16 @@ var sql = SQL.del('user_table').where({
   'phone': ['>', 2345678]
 }).done()
 
-/*
-delete from user_table where name = "hao"
-and age between 12 and 23 and point > 1200 or nickname = "hx"
-or money between 2345 and 3456 or phone > 2345678
-*/
+// delete from user_table where name = "hao" and age between 12 and 23 and point > 1200 or nickname = "hx" or money between 2345 and 3456 or phone > 2345678
 ```
 
-### test
-test coverage: 100%
-
-### License
-MIT
+[npm-img]: https://img.shields.io/npm/v/j-sql.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/j-sql
+[travis-img]: https://img.shields.io/travis/coderhaoxin/j-sql.svg?style=flat-square
+[travis-url]: https://travis-ci.org/coderhaoxin/j-sql
+[coveralls-img]: https://img.shields.io/coveralls/coderhaoxin/j-sql.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/coderhaoxin/j-sql?branch=master
+[license-img]: http://img.shields.io/badge/license-MIT-green.svg?style=flat-square
+[license-url]: http://opensource.org/licenses/MIT
+[david-img]: https://img.shields.io/david/coderhaoxin/j-sql.svg?style=flat-square
+[david-url]: https://david-dm.org/coderhaoxin/j-sql

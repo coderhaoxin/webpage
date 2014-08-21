@@ -1,0 +1,22 @@
+{
+  "browser": true,
+  "node": true,
+  "esnext": true,
+  "globals": {},
+  "globalstrict": true,
+  "quotmark": true,
+  "smarttabs": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true,
+  "exported": [
+    "should"
+  ],
+  "noyield": true,
+  "predef": [
+    "describe",
+    "before",
+    "after",
+    "it"
+  ]
+}
