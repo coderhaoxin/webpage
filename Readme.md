@@ -1,3 +1,5 @@
+### deprecated, use [node-sql](https://github.com/brianc/node-sql) or [knex](https://github.com/tgriesser/knex)
+
 [![NPM version][npm-img]][npm-url]
 [![Build status][travis-img]][travis-url]
 [![Test coverage][coveralls-img]][coveralls-url]
